@@ -21,11 +21,10 @@ jobs:
           fi
           unzip "$ZIP_FILE" -d project_source
 
-      - name: Apply KillAura Patch
+      - name: Apply AttackAura Patch
         run: |
-          # Находим старую КиллАуру внутри архива и заменяем её на нашу новую
-          find project_source -name "KillAura.java" -exec cp patch/KillAura.java {} \;
-          echo "Файл KillAura.java успешно заменен!"
+          find project_source -name "AttackAura.java" -exec cp patch/AttackAura.java {} \;
+          echo "Патч применен!"
 
       - name: Set up JDK 21
         uses: actions/setup-java@v4
