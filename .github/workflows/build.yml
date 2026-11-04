@@ -18,7 +18,6 @@ jobs:
           echo "=== Содержимое репозитория ==="
           ls -la
           
-          # Ищем любой zip-файл, если исходного нет
           ZIP_FILE="1793782978035.zip"
           if [ ! -f "$ZIP_FILE" ]; then
             echo "Файл $ZIP_FILE не найден. Ищем любой другой .zip..."
@@ -33,10 +32,10 @@ jobs:
           echo "Распаковываем: $ZIP_FILE"
           unzip "$ZIP_FILE" -d project_source
 
-      - name: Set up JDK 17
+      - name: Set up JDK 21
         uses: actions/setup-java@v4
         with:
-          java-version: '17'
+          java-version: '21'  # <-- ИЗМЕНЕНО НА 21
           distribution: 'temurin'
 
       - name: Setup Gradle
