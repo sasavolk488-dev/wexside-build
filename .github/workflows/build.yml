@@ -13,6 +13,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Unzip source code
+        run: |
+          unzip 1793782978035.zip -d project_source
+
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
@@ -24,6 +28,7 @@ jobs:
 
       - name: Build with Gradle
         run: |
+          cd project_source/WexSideSRC
           chmod +x gradlew
           ./gradlew build
 
@@ -31,4 +36,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: wexside-jar
-          path: build/libs/*.jar
+          path: project_source/WexSideSRC/build/libs/*.jar
