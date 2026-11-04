@@ -13,9 +13,25 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Unzip source code
+      - name: Find and Unzip source code
         run: |
-          unzip 1793782978035.zip -d project_source
+          echo "=== Содержимое репозитория ==="
+          ls -la
+          
+          # Ищем любой zip-файл, если исходного нет
+          ZIP_FILE="1793782978035.zip"
+          if [ ! -f "$ZIP_FILE" ]; then
+            echo "Файл $ZIP_FILE не найден. Ищем любой другой .zip..."
+            ZIP_FILE=$(find . -maxdepth 1 -name "*.zip" | head -n 1)
+          fi
+          
+          if [ -z "$ZIP_FILE" ]; then
+            echo "ОШИБКА: В репозитории вообще нет zip-архивов!"
+            exit 1
+          fi
+          
+          echo "Распаковываем: $ZIP_FILE"
+          unzip "$ZIP_FILE" -d project_source
 
       - name: Set up JDK 17
         uses: actions/setup-java@v4
