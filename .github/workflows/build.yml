@@ -15,27 +15,22 @@ jobs:
 
       - name: Find and Unzip source code
         run: |
-          echo "=== Содержимое репозитория ==="
-          ls -la
-          
           ZIP_FILE="1793782978035.zip"
           if [ ! -f "$ZIP_FILE" ]; then
-            echo "Файл $ZIP_FILE не найден. Ищем любой другой .zip..."
             ZIP_FILE=$(find . -maxdepth 1 -name "*.zip" | head -n 1)
           fi
-          
-          if [ -z "$ZIP_FILE" ]; then
-            echo "ОШИБКА: В репозитории вообще нет zip-архивов!"
-            exit 1
-          fi
-          
-          echo "Распаковываем: $ZIP_FILE"
           unzip "$ZIP_FILE" -d project_source
+
+      - name: Apply KillAura Patch
+        run: |
+          # Находим старую КиллАуру внутри архива и заменяем её на нашу новую
+          find project_source -name "KillAura.java" -exec cp patch/KillAura.java {} \;
+          echo "Файл KillAura.java успешно заменен!"
 
       - name: Set up JDK 21
         uses: actions/setup-java@v4
         with:
-          java-version: '21'  # <-- ИЗМЕНЕНО НА 21
+          java-version: '21'
           distribution: 'temurin'
 
       - name: Setup Gradle
